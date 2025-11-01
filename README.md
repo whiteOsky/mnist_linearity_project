@@ -1,72 +1,53 @@
-# Exploring the Limits of Linearity on MNIST
+# 🧠 Exploring the Limits of Linearity on MNIST
 
-> From pure linear classifiers to ReLU MLPs — quantify what each component (Softmax, ReLU, Dropout, BatchNorm) buys you.
+> *A minimal yet expressive journey from pure linear models to deep nonlinearity — built from scratch with PyTorch.*
 
-## Project Goals
-1. Start with **pure linear** model `y = XW + b` on MNIST.
-2. Switch the loss to **CrossEntropy** (Softmax) and compare.
-3. Add **ReLU** (single hidden layer) → observe nonlinearity benefits.
-4. Add **Dropout** and **BatchNorm** → observe generalization & stability.
-5. Produce **tables/plots** and a short **report**.
+---
 
-## Quick Start
+## 🌟 Overview
+
+This project explores how different architectural and functional choices impact model performance on the **MNIST** handwritten digit dataset.
+
+We begin from a simple **Linear Regression classifier** and gradually evolve it into a **nonlinear MLP** with ReLU, Dropout, and BatchNorm — quantifying *how much each step actually matters*.
+
+<p align="center">
+  <img src="assets/evolution_diagram.png" width="700">
+</p>
+
+---
+
+## 🧱 Model Evolution Stages
+
+| Stage | Architecture | Loss | Test Accuracy | Key Takeaways |
+|:------|:-------------|:-----|:--------------|:---------------|
+| ① Linear | 784 → 10 | MSE | **92.6%** | Learns only linear boundaries |
+| ② Linear + Softmax | 784 → 10 | CrossEntropy | **92.1%** | Proper classification objective |
+| ③ MLP + ReLU | 784 → 256 → 10 | CrossEntropy | **97.5%** | Nonlinearity unlocks expressivity |
+| ④ + Dropout | 784 → 256 → 10 | CrossEntropy | **97.3%** | Improves generalization |
+| ⑤ + BatchNorm | 784 → BN → 256 → 10 | CrossEntropy | **97.7%** | Faster & more stable convergence |
+
+---
+
+## 🧩 Visual Results
+
+| Model | Training Curve | Linear Weight Templates |
+|:--:|:--:|:--:|
+| **Linear (MSE)** | ![Linear MSE Curve](assets/linear_curve.png) | ![Weight Templates](assets/weights_linear.png) |
+| **MLP + ReLU** | ![MLP Curve](assets/mlp_curve.png) | — |
+
+---
+
+## ⚙️ How to Reproduce
+
 ```bash
-# (Optional) create venv
-python -m venv .venv && source .venv/bin/activate  # Windows: .venv\Scripts\activate
-
-# Install deps
+git clone https://github.com/whiteOsky/mnist_linearity_project.git
+cd mnist_linearity_project
+python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
-# Stage 1: Pure Linear (MSE loss)
+# Run each stage:
 python -m src.train --model linear --loss mse --epochs 5
-
-# Stage 2: Linear + CrossEntropy (Softmax)
 python -m src.train --model linear --loss crossentropy --epochs 5
-
-# Stage 3: MLP + ReLU
 python -m src.train --model mlp --hidden 256 --epochs 5
-
-# Stage 4: MLP + ReLU + Dropout
 python -m src.train --model mlp --hidden 256 --dropout 0.5 --epochs 5
-
-# Stage 4b: + BatchNorm
 python -m src.train --model mlp --hidden 256 --batchnorm --epochs 5
-```
-
-## Expected Ballpark (test accuracy, for reference only)
-| Model | Loss | Test Acc (±) |
-|------|------|---------------|
-| Linear | MSE | ~80–85% |
-| Linear | CrossEntropy | ~88–92% |
-| MLP(784→256→10) + ReLU | CrossEntropy | ~96–97% |
-| + Dropout / + BatchNorm | CrossEntropy | ~96.5–97.7% |
-
-> Numbers depend on epochs, learning rate, and randomness. Treat them as reference.
-
-## Repo Structure
-```
-.
-├── README.md
-├── requirements.txt
-├── src
-│   ├── data.py
-│   ├── models.py
-│   ├── utils.py
-│   └── train.py
-├── notebooks
-│   └── 01_exploring_linearity.ipynb
-└── scripts
-    ├── run_linear_mse.sh
-    ├── run_linear_ce.sh
-    └── run_mlp_relu.sh
-```
-
-## Reporting
-Use the notebook to:
-- Plot training/validation **loss & accuracy** curves.
-- Visualize **weight templates** of the linear classifier.
-- Show **misclassified** examples and confusion matrices.
-- Generate a short **HTML/PDF** report.
-
-## License
-MIT
