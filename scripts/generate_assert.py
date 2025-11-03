@@ -88,3 +88,28 @@ else:
     print("[Warning] No 'mnist_linear_crossentropy_best.pt' found, skipping weight visualization.")
 
 print("✅ All figures generated in ./assets/")
+
+import matplotlib.pyplot as plt
+
+# 模拟训练结果（可替换成你真实日志数据）
+epochs = [1, 2, 3, 4, 5]
+train_loss = [0.37, 0.16, 0.11, 0.085, 0.065]
+val_acc = [93.8, 95.5, 96.3, 96.8, 97.1]
+
+fig, ax1 = plt.subplots(figsize=(6, 4))
+
+ax1.plot(epochs, train_loss, 'o-', color='tomato', label='Train Loss')
+ax1.set_xlabel('Epoch')
+ax1.set_ylabel('Loss', color='tomato')
+ax1.tick_params(axis='y', labelcolor='tomato')
+
+ax2 = ax1.twinx()
+ax2.plot(epochs, val_acc, 's-', color='royalblue', label='Val Accuracy')
+ax2.set_ylabel('Accuracy (%)', color='royalblue')
+ax2.tick_params(axis='y', labelcolor='royalblue')
+
+plt.title('Training Dynamics: MLP + ReLU')
+fig.tight_layout()
+plt.savefig('assets/mlp_curve.png', dpi=150)
+plt.close()
+print("✅ Saved assets/mlp_curve.png")
