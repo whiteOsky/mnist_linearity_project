@@ -51,3 +51,6 @@ python -m src.train --model linear --loss crossentropy --epochs 5
 python -m src.train --model mlp --hidden 256 --epochs 5
 python -m src.train --model mlp --hidden 256 --dropout 0.5 --epochs 5
 python -m src.train --model mlp --hidden 256 --batchnorm --epochs 5
+
+
+展示网站https://whiteosky.github.io/mnist-linearity-web/
